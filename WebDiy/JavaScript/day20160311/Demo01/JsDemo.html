@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>模糊虚浮隐藏</title>
+	<link rel="stylesheet" href="">
+	<style type="text/css">
+		.divMask{display: block; z-index: 10; background-color: #999; position: fixed; opacity: 0;}
+	</style>
+	<script type="text/javascript">
+		window.onload = function(){
+			var img = document.getElementById("img");
+			var iimg = document.getElementById("iimg");
+
+			iimg.width = img.width;
+			console.log("width : " + img.width);
+			iimg.height = img.height;
+
+			var num = 0;
+			var opacity = null;
+			var timeHandle = null;
+			iimg.onmouseover = function mouseOver(){
+				if(null != timeHandle){
+					clearInterval(timeHandle);
+				}
+
+				num = 0;
+				iimg.style.display = "block";
+				opacity = 0;
+				timeHandle = setInterval(function(){
+					if (num >= 15){
+						clearInterval(timeHandle);
+					}
+
+					num++;
+					opacity += 5;
+					iimg.style.opacity = opacity / 100;
+					iimg.style.filter = "alpha(opacity=" + opacity +")";
+				}, 60);
+			}
+
+			iimg.onmouseout = function mouseOut(){
+				if(null != timeHandle){
+					clearInterval(timeHandle);
+				}
+				num = 0;
+
+				timeHandle = setInterval(function(){
+					if (num >= 15){
+						clearInterval(timeHandle);
+					}
+
+					num++;
+					opacity -= 5;
+					iimg.style.opacity = opacity / 100;
+					iimg.style.filter = "alpha(opacity=" + opacity +")";
+				}, 60);
+			}
+		}
+	</script>
+</head>
+<body>
+	<div>
+		<img src="../../../Src/img01.jpeg" id="img" alt="Image loaded fail." width="280px" style="position:fixed;"
+		/>
+		<img id="iimg" class="divMask"/>
+	</div>
+</body>
+</html>
